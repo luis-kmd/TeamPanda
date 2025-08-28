@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeamPanda - Dashboard de Professores</title>
+    <link rel="stylesheet" href="/pages/professores/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Menu Lateral -->
+        <div class="sidebar" id="sidebar">
+            <div class="logo-container">
+                <img src="/pages/professores/images/pandao.png" alt="TeamPanda Logo" class="logo">
+            </div>
+            
+            <div class="menu-items">
+                <div class="menu-item active" data-content="usuario">
+                    <i class="fas fa-user"></i>
+                    <span>Usuário</span>
+                </div>
+                <div class="menu-item" data-content="alunos">
+                    <i class="fas fa-users"></i>
+                    <span>Alunos</span>
+                </div>
+                <div class="menu-item" data-content="planos">
+                    <i class="fas fa-list-alt"></i>
+                    <span>Planos</span>
+                </div>
+                <div class="menu-item" data-content="relatorios">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Relatórios</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="weather">
+                    <i class="fas fa-temperature-high"></i>
+                    <span id="temperature"></span>
+                </div>
+                <div class="time">
+                    <i class="fas fa-clock"></i>
+                    <span id="current-time"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <div class="toggle-menu" id="toggle-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <div class="user-info">
+                    <span>Olá, {{ nome }}!</span>
+                    <a href="/logout" title="Sair"><i class="fas fa-sign-out-alt"></i></a>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <!-- Seção Usuário -->
+                <div class="content-section active" id="usuario-content">
+                    <h2>Perfil do Usuário</h2>
+                    <div class="profile-card">
+                        <div class="profile-header">
+                            <div class="profile-avatar">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="profile-info">
+                                <h3>{{ nome }}</h3>
+                                <p>{{ email }}</p>
+                                <p>ID: #{{ id }}</p>
+                            </div>
+                        </div>
+                        <div class="profile-details">
+                            <div class="detail-item">
+                                <h4>Informações Pessoais</h4>
+                                <div class="form-group">
+                                    <label>Nome Completo</label>
+                                    <input type="text" value="{{ nome }}" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label>E-mail</label>
+                                    <input type="email" value="{{ email }}" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label>Telefone</label>
+                                    <input type="tel" value="{{ telefone }}" disabled>
+                                </div>
+                                <button class="edit-btn" id="edit-profile-btn">Editar Informações</button>
+                            </div>
+                            <div class="detail-item">
+                                <h4>Estatísticas</h4>
+                                <div class="stats" id="user-stats">
+                                    <!-- Estatísticas serão carregadas do banco de dados -->
+                                    <div class="stat-item">
+                                        <span class="stat-value">0</span>
+                                        <span class="stat-label">Alunos</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-value">0</span>
+                                        <span class="stat-label">Turmas</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-value">0h</span>
+                                        <span class="stat-label">Horas/Mês</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção Alunos -->
+                <div class="content-section" id="alunos-content">
+                    <h2>Pesquisa e Cadastro de Alunos</h2>
+                    <div class="search-container">
+                        <div class="search-box">
+                            <input type="text" id="aluno-search" placeholder="Buscar aluno por nome ou ID...">
+                            <button class="search-btn" id="search-aluno-btn"><i class="fas fa-search"></i></button>
+                        </div>
+                        <button class="add-btn" id="add-aluno-btn"><i class="fas fa-plus"></i> Novo Aluno</button>
+                    </div>
+                    
+                    <div class="students-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nome</th>
+                                    <th>E-mail</th>
+                                    <th>Plano</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="alunos-table-body">
+                                <!-- Os dados dos alunos serão carregados do banco de dados -->
+                                <tr class="empty-row">
+                                    <td colspan="6" class="empty-message">Nenhum aluno encontrado. Utilize o botão "Novo Aluno" para adicionar.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination" id="alunos-pagination">
+                        <!-- Paginação será gerada dinamicamente -->
+                    </div>
+                </div>
+
+                <!-- Seção Planos -->
+                <div class="content-section" id="planos-content">
+                    <h2>Planos Cadastrados</h2>
+                    <div class="plans-container" id="plans-container">
+                        <!-- Os planos serão carregados do banco de dados -->
+                        <div class="plan-card add-plan" id="add-plan-btn">
+                            <div class="add-plan-content">
+                                <i class="fas fa-plus-circle"></i>
+                                <h3>Adicionar Novo Plano</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção Relatórios -->
+                <div class="content-section" id="relatorios-content">
+                    <h2>Geração de Relatórios</h2>
+                    <div class="reports-container">
+                        <div class="reports-filters">
+                            <h3>Filtros</h3>
+                            <div class="filter-group">
+                                <label>Período</label>
+                                <div class="date-range">
+                                    <input type="date" id="data-inicial" class="date-input" placeholder="Data inicial">
+                                    <span>até</span>
+                                    <input type="date" id="data-final" class="date-input" placeholder="Data final">
+                                </div>
+                            </div>
+                            <div class="filter-group">
+                                <label>Tipo de Relatório</label>
+                                <select class="filter-select" id="tipo-relatorio">
+                                    <option value="">Selecione um tipo</option>
+                                    <option value="frequencia">Frequência de Alunos</option>
+                                    <option value="desempenho">Desempenho por Turma</option>
+                                    <option value="financeiro">Financeiro</option>
+                                    <option value="atividades">Atividades Realizadas</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label>Turma</label>
+                                <select class="filter-select" id="turma-relatorio">
+                                    <option value="todas">Todas as Turmas</option>
+                                    <!-- As turmas serão carregadas do banco de dados -->
+                                </select>
+                            </div>
+                            <button class="generate-report-btn" id="generate-report-btn">Gerar Relatório</button>
+                        </div>
+
+                        <div class="reports-list">
+                            <h3>Relatórios Recentes</h3>
+                            <div id="reports-list-container">
+                                <!-- Os relatórios serão carregados do banco de dados -->
+                                <div class="empty-state" id="empty-reports">
+                                    <i class="fas fa-file-alt"></i>
+                                    <h3>Nenhum relatório encontrado</h3>
+                                    <p>Use os filtros ao lado para gerar um novo relatório</p>
+                                </div>
+                            </div>
+                            
+                            <div class="report-card new-report" id="new-custom-report">
+                                <div class="new-report-content">
+                                    <i class="fas fa-plus-circle"></i>
+                                    <h4>Criar Novo Relatório Personalizado</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modais -->
+    <!-- Modal para Edição de Perfil -->
+    <div class="modal" id="edit-profile-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Editar Perfil</h3>
+                <button class="close-modal" id="close-profile-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-profile-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="edit-nome">Nome Completo</label>
+                            <input type="text" id="edit-nome" name="nome" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="edit-email">E-mail</label>
+                            <input type="email" id="edit-email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-telefone">Telefone</label>
+                            <input type="tel" id="edit-telefone" name="telefone" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="edit-senha">Nova Senha (deixe em branco para manter a atual)</label>
+                            <input type="password" id="edit-senha" name="senha">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-confirmar-senha">Confirmar Nova Senha</label>
+                            <input type="password" id="edit-confirmar-senha" name="confirmar_senha">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="cancel-btn" id="cancel-profile-edit">Cancelar</button>
+                        <button type="submit" class="submit-btn">Salvar Alterações</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar/Editar Aluno -->
+    <div class="modal" id="aluno-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="aluno-modal-title">Adicionar Novo Aluno</h3>
+                <button class="close-modal" id="close-aluno-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="aluno-form">
+                    <input type="hidden" id="aluno-id" name="id">
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="aluno-nome">Nome Completo</label>
+                            <input type="text" id="aluno-nome" name="nome" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="aluno-email">E-mail</label>
+                            <input type="email" id="aluno-email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="aluno-telefone">Telefone</label>
+                            <input type="tel" id="aluno-telefone" name="telefone" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="aluno-nascimento">Data de Nascimento</label>
+                            <input type="date" id="aluno-nascimento" name="nascimento" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="aluno-plano">Plano</label>
+                            <select id="aluno-plano" name="plano" required>
+                                <option value="">Selecione um plano</option>
+                                <!-- Os planos serão carregados do banco de dados -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="aluno-rua">Rua</label>
+                            <input type="text" id="aluno-rua" name="rua" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="aluno-bairro">Bairro</label>
+                            <input type="text" id="aluno-bairro" name="bairro" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="aluno-observacoes">Observações</label>
+                            <textarea id="aluno-observacoes" name="observacoes" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="aluno-status" name="status" checked>
+                            <label for="aluno-status">Aluno Ativo</label>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="cancel-btn" id="cancel-aluno">Cancelar</button>
+                        <button type="submit" class="submit-btn">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar/Editar Plano -->
+    <div class="modal" id="plano-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="plano-modal-title">Adicionar Novo Plano</h3>
+                <button class="close-modal" id="close-plano-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="plano-form">
+                    <input type="hidden" id="plano-id" name="id">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="plano-nome">Nome do Plano</label>
+                            <input type="text" id="plano-nome" name="nome" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="plano-preco">Preço Mensal (R$)</label>
+                            <input type="number" id="plano-preco" name="preco" step="0.01" min="0" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="plano-destaque" name="destaque">
+                            <label for="plano-destaque">Plano em Destaque</label>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <h4>Características do Plano</h4>
+                        <div id="features-container">
+                            <!-- As características serão adicionadas dinamicamente -->
+                            <div class="feature-item">
+                                <div class="form-group">
+                                    <input type="text" name="features[]" placeholder="Ex: Acesso a 5 turmas" required>
+                                </div>
+                                <div class="form-group checkbox-group">
+                                    <input type="checkbox" name="feature_included[]" checked>
+                                    <label>Incluído</label>
+                                </div>
+                                <button type="button" class="remove-feature-btn"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                        <button type="button" class="add-feature-btn" id="add-feature-btn">
+                            <i class="fas fa-plus"></i> Adicionar Característica
+                        </button>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="delete-btn">Excluir</button>
+                        <button type="button" class="cancel-btn" id="cancel-plano">Cancelar</button>
+                        <button type="submit" class="submit-btn">Salvar Plano</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Visualizar Aluno -->
+    <div class="modal" id="view-aluno-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Detalhes do Aluno</h3>
+                <button class="close-modal" id="close-view-aluno"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body student-details" id="student-details-container">
+                <!-- Os detalhes do aluno serão carregados dinamicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast de Notificação -->
+    <div class="toast-container" id="toast-container">
+        <!-- As notificações serão adicionadas dinamicamente -->
+    </div>
+
+    <script src="/pages/professores/script.js"></script>
+</body>
+</html>
