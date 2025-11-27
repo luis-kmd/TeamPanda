@@ -327,7 +327,6 @@ body {
   color: white;
 }
 
-
 .cancel-btn {
   background-color: var(--light-gray);
   color: var(--text-color);
@@ -350,7 +349,7 @@ body {
   background-color: #3d8b40;
 }
 
-.delete-btn:hover{
+.delete-btn:hover {
   background-color: #d32f2f;
 }
 
@@ -575,9 +574,13 @@ tbody tr:hover {
   background-color: var(--secondary-color);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
-  overflow: hidden;
   transition: var(--transition);
   position: relative;
+  overflow: hidden;
+
+  /* ADIÇÃO PARA ALINHAMENTO: Garante altura e alinhamento consistentes */
+  display: flex;
+  flex-direction: column;
 }
 
 .plan-card:hover {
@@ -585,16 +588,32 @@ tbody tr:hover {
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
+.plan-card.featured {
+  border: 2px solid var(--warning-color);
+}
+
 .plan-badge {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 15px;
+  right: -30px;
   background-color: var(--warning-color);
-  color: var(--secondary-color);
-  padding: 5px 10px;
-  border-radius: 20px;
+  color: var(--text-color);
+  padding: 5px 30px;
   font-size: 0.8rem;
-  font-weight: 500;
+  font-weight: 600;
+  transform: rotate(45deg);
+  transform-origin: top right;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* WORKAROUND PARA O BADGE: Ajustando o posicionamento */
+.plan-card.featured .plan-badge {
+  right: 15px;
+  top: 15px;
+  transform: rotate(0deg);
+  border-radius: 20px;
+  padding: 5px 12px;
 }
 
 .plan-header {
@@ -604,21 +623,29 @@ tbody tr:hover {
   text-align: center;
 }
 
+.plan-header h3 {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
 .plan-price {
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin-top: 10px;
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-top: 5px;
   display: block;
 }
 
 .period {
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 400;
-  opacity: 0.8;
+  opacity: 0.7;
+  margin-left: 5px;
 }
 
 .plan-features {
-  padding: 20px;
+  padding: 25px;
+  /* ADIÇÃO PARA ALINHAMENTO: Faz a lista crescer e empurrar os botões para baixo */
+  flex-grow: 1;
 }
 
 .plan-features ul {
@@ -626,44 +653,47 @@ tbody tr:hover {
 }
 
 .plan-features li {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   display: flex;
   align-items: center;
+  font-size: 0.95rem;
 }
 
 .plan-features li i {
-  margin-right: 10px;
-  font-size: 0.9rem;
+  margin-right: 12px;
+  font-size: 1.1rem;
 }
 
-.plan-features li i.fa-check {
+.plan-features li .fa-check {
   color: var(--success-color);
 }
 
-.plan-features li i.fa-times {
+.plan-features li .fa-times {
   color: var(--danger-color);
 }
 
 .plan-actions {
-  padding: 0 20px 20px;
+  padding: 0 25px 25px;
   display: flex;
-  justify-content: space-between;
+  gap: 10px;
 }
 
 .edit-plan,
 .view-students {
-  padding: 8px 15px;
+  padding: 10px 15px;
   border: none;
   border-radius: var(--border-radius);
   cursor: pointer;
   transition: var(--transition);
   flex: 1;
-  margin: 0 5px;
+  font-weight: 500;
+  font-size: 0.9rem;
 }
 
 .edit-plan {
   background-color: var(--light-gray);
   color: var(--text-color);
+  border: 1px solid var(--medium-gray);
 }
 
 .view-students {
@@ -679,85 +709,29 @@ tbody tr:hover {
   background-color: var(--accent-color);
 }
 
-.plan-card.featured {
-  border: 2px solid var(--warning-color);
-}
-
 .add-plan {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--light-gray);
   border: 2px dashed var(--medium-gray);
+  background-color: transparent;
   cursor: pointer;
   transition: var(--transition);
 }
 
 .add-plan:hover {
-  background-color: var(--medium-gray);
+  background-color: var(--light-gray);
+  border-color: var(--dark-gray);
 }
 
 .add-plan-content {
   text-align: center;
-  padding: 40px 20px;
+  color: var(--dark-gray);
 }
 
 .add-plan-content i {
   font-size: 2.5rem;
-  color: var(--dark-gray);
   margin-bottom: 15px;
-}
-
-.form-section {
-  margin-top: 25px;
-  border-top: 1px solid var(--medium-gray);
-  padding-top: 20px;
-}
-
-.form-section h4 {
-  margin-bottom: 10px;
-  color: var(--primary-color);
-}
-
-.feature-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.feature-item .form-group {
-  flex: 1;
-  margin-bottom: 0;
-}
-
-.remove-feature-btn {
-  background: none;
-  border: none;
-  color: var(--danger-color);
-  cursor: pointer;
-  font-size: 1rem;
-  margin-left: 10px;
-}
-
-.add-feature-btn {
-  background: none;
-  border: 1px dashed var(--medium-gray);
-  color: var(--dark-gray);
-  padding: 8px 15px;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  margin-top: 10px;
-  transition: var(--transition);
-}
-
-.add-feature-btn:hover {
-  background-color: var(--light-gray);
-  color: var(--text-color);
 }
 
 /* Estilos da Seção de Relatórios */
@@ -1324,3 +1298,95 @@ tbody tr:hover {
     width: 95%;
   }
 }
+
+/* Estilos aprimorados para o Modal de Planos */
+.modal-body .form-section {
+  margin-top: 25px;
+  border-top: 1px solid var(--medium-gray);
+  padding-top: 20px;
+}
+
+.modal-body .form-section h4 {
+  margin-bottom: 15px;
+  color: var(--primary-color);
+  font-size: 1.1rem;
+}
+
+/* Container para a lista de características dinâmicas */
+#features-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.feature-item .form-group {
+  flex: 1; /* Input de texto ocupa a maior parte do espaço */
+  margin-bottom: 0;
+}
+
+.feature-item .checkbox-group {
+  flex-basis: 100px; /* Largura fixa para o checkbox "Incluído" */
+}
+
+.remove-feature-btn {
+  background: none;
+  border: 1px solid var(--medium-gray);
+  color: var(--danger-color);
+  cursor: pointer;
+  font-size: 0.9rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.remove-feature-btn:hover {
+  background-color: var(--danger-color);
+  color: var(--secondary-color);
+  border-color: var(--danger-color);
+}
+
+.add-feature-btn {
+  background: none;
+  border: 1px dashed var(--medium-gray);
+  color: var(--dark-gray);
+  padding: 10px 15px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 15px;
+  transition: var(--transition);
+  font-weight: 500;
+}
+
+.add-feature-btn:hover {
+  background-color: var(--light-gray);
+  color: var(--text-color);
+  border-color: var(--dark-gray);
+}
+
+/* Ajustes nos botões principais do Modal */
+.modal .form-actions {
+  padding-top: 20px;
+  border-top: 1px solid var(--medium-gray);
+}
+
+.modal .delete-btn {
+  margin-right: auto; /* Joga o botão de excluir para a esquerda */
+}
+

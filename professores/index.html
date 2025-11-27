@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TeamPanda - Dashboard de Professores</title>
-    <link rel="stylesheet" href="/pages/professores/styles.css">
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
     <div class="container">
         <!-- Menu Lateral -->
         <div class="sidebar" id="sidebar">
             <div class="logo-container">
-                <img src="/pages/professores/images/pandao.png" alt="TeamPanda Logo" class="logo">
+                <img src="images/pandao.png" alt="TeamPanda Logo" class="logo">
             </div>
             
             <div class="menu-items">
@@ -52,7 +53,7 @@
                     <i class="fas fa-bars"></i>
                 </div>
                 <div class="user-info">
-                    <span>Olá, {{ nome }}!</span>
+                    <span>Olá, nome!</span>
                     <a href="/logout" title="Sair"><i class="fas fa-sign-out-alt"></i></a>
                 </div>
             </div>
@@ -67,9 +68,8 @@
                                 <i class="fas fa-user-circle"></i>
                             </div>
                             <div class="profile-info">
-                                <h3>{{ nome }}</h3>
-                                <p>{{ email }}</p>
-                                <p>ID: #{{ id }}</p>
+                                <h3>nome</h3>
+                                <p>email</p>
                             </div>
                         </div>
                         <div class="profile-details">
@@ -88,24 +88,6 @@
                                     <input type="tel" value="{{ telefone }}" disabled>
                                 </div>
                                 <button class="edit-btn" id="edit-profile-btn">Editar Informações</button>
-                            </div>
-                            <div class="detail-item">
-                                <h4>Estatísticas</h4>
-                                <div class="stats" id="user-stats">
-                                    <!-- Estatísticas serão carregadas do banco de dados -->
-                                    <div class="stat-item">
-                                        <span class="stat-value">0</span>
-                                        <span class="stat-label">Alunos</span>
-                                    </div>
-                                    <div class="stat-item">
-                                        <span class="stat-value">0</span>
-                                        <span class="stat-label">Turmas</span>
-                                    </div>
-                                    <div class="stat-item">
-                                        <span class="stat-value">0h</span>
-                                        <span class="stat-label">Horas/Mês</span>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -151,13 +133,7 @@
                 <div class="content-section" id="planos-content">
                     <h2>Planos Cadastrados</h2>
                     <div class="plans-container" id="plans-container">
-                        <!-- Os planos serão carregados do banco de dados -->
-                        <div class="plan-card add-plan" id="add-plan-btn">
-                            <div class="add-plan-content">
-                                <i class="fas fa-plus-circle"></i>
-                                <h3>Adicionar Novo Plano</h3>
-                            </div>
-                        </div>
+                        <button class="add-btn" id="add-plano-btn"><i class="fas fa-plus"></i> Novo Plano</button>
                     </div>
                 </div>
 
@@ -292,15 +268,12 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="aluno-nascimento">Data de Nascimento</label>
-                            <input type="date" id="aluno-nascimento" name="nascimento" required>
+                            <label for="aluno-cpf">CPF</label>
+                            <input type="text" id="aluno-cpf" name="cpf" required placeholder="000.000.000-00">
                         </div>
                         <div class="form-group">
-                            <label for="aluno-plano">Plano</label>
-                            <select id="aluno-plano" name="plano" required>
-                                <option value="">Selecione um plano</option>
-                                <!-- Os planos serão carregados do banco de dados -->
-                            </select>
+                            <label for="aluno-nascimento">Data de Nascimento</label>
+                            <input type="date" id="aluno-nascimento" name="nascimento" required>
                         </div>
                     </div>
                     <div class="form-row">
@@ -311,6 +284,15 @@
                         <div class="form-group">
                             <label for="aluno-bairro">Bairro</label>
                             <input type="text" id="aluno-bairro" name="bairro" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="aluno-plano">Plano</label>
+                            <select id="aluno-plano" name="plano" required>
+                                <option value="">Selecione um plano</option>
+                                <!-- Os planos serão carregados do banco de dados -->
+                            </select>
                         </div>
                     </div>
                     <div class="form-row">
@@ -338,7 +320,7 @@
     <div class="modal" id="plano-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="plano-modal-title">Adicionar Novo Plano</h3>
+                <h3 id="plano-modal-title">Editar Plano</h3>
                 <button class="close-modal" id="close-plano-modal"><i class="fas fa-times"></i></button>
             </div>
             <div class="modal-body">
@@ -366,7 +348,7 @@
                             <!-- As características serão adicionadas dinamicamente -->
                             <div class="feature-item">
                                 <div class="form-group">
-                                    <input type="text" name="features[]" placeholder="Ex: Acesso a 5 turmas" required>
+                                    <input type="text" name="features[]" placeholder="Ex: Acesso a 5 turmas">
                                 </div>
                                 <div class="form-group checkbox-group">
                                     <input type="checkbox" name="feature_included[]" checked>
@@ -380,9 +362,62 @@
                         </button>
                     </div>
                     <div class="form-actions">
-                        <button type="submit" class="delete-btn">Excluir</button>
+                        <button id="excluir-plano-btn" type="button" class="delete-btn">Excluir</button>
                         <button type="button" class="cancel-btn" id="cancel-plano">Cancelar</button>
                         <button type="submit" class="submit-btn">Salvar Plano</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar Novo Plano -->
+    <div class="modal" id="add-plano-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Adicionar Novo Plano</h3>
+                <button class="close-modal" id="close-add-plano-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="add-plano-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="add-plano-nome">Nome do Plano</label>
+                            <input type="text" id="add-plano-nome" name="nome" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="add-plano-preco">Preço Mensal (R$)</label>
+                            <input type="number" id="add-plano-preco" name="preco" step="0.01" min="0" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="add-plano-destaque" name="destaque">
+                            <label for="add-plano-destaque">Plano em Destaque</label>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <h4>Características do Plano</h4>
+                        <div id="add-features-container">
+                            <!-- As características serão adicionadas dinamicamente -->
+                            <div class="feature-item">
+                                <div class="form-group">
+                                    <input type="text" name="add_features[]" placeholder="Ex: Acesso a 5 turmas">
+                                </div>
+                                <div class="form-group checkbox-group">
+                                    <input type="checkbox" name="add_feature_included[]" checked>
+                                    <label>Incluído</label>
+                                </div>
+                                <button type="button" class="remove-add-feature-btn"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                        <button type="button" class="add-feature-btn" id="add-add-feature-btn">
+                            <i class="fas fa-plus"></i> Adicionar Característica
+                        </button>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="cancel-btn" id="cancel-add-plano">Cancelar</button>
+                        <button type="submit" class="submit-btn">Criar Plano</button>
                     </div>
                 </form>
             </div>
@@ -402,11 +437,9 @@
         </div>
     </div>
 
-    <!-- Toast de Notificação -->
     <div class="toast-container" id="toast-container">
-        <!-- As notificações serão adicionadas dinamicamente -->
     </div>
 
-    <script src="/pages/professores/script.js"></script>
+
 </body>
 </html>
