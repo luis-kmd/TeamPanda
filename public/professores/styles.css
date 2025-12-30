@@ -1390,3 +1390,35 @@ tbody tr:hover {
   margin-right: auto; /* Joga o botão de excluir para a esquerda */
 }
 
+
+/* Estilo para o Card de "Novo Plano" */
+.plan-card.add-new {
+    border: 3px dashed var(--medium-gray);
+    background-color: transparent;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 350px; /* Mesma altura média dos outros cards */
+    transition: all 0.3s ease;
+    color: var(--dark-gray);
+}
+
+.plan-card.add-new:hover {
+    border-color: var(--primary-color);
+    background-color: rgba(0, 0, 0, 0.02);
+    color: var(--primary-color);
+    transform: translateY(-5px);
+}
+
+.plan-card.add-new i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    opacity: 0.7;
+}
+
+.plan-card.add-new span {
+    font-size: 1.2rem;
+    font-weight: 500;
+}

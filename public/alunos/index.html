@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeamPanda - Portal do Aluno</title>
+    <link rel="stylesheet" href="/alunos/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="/alunos/script.js" defer></script>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Menu Lateral -->
+        <div class="sidebar" id="sidebar">
+            <div class="logo-container">
+                <img src="/alunos/images/pandao.png" alt="TeamPanda Logo" class="logo">
+            </div>
+
+            <div class="menu-items">
+                <div class="menu-item active" data-content="usuario">
+                    <i class="fas fa-user"></i>
+                    <span>Perfil</span>
+                </div>
+                <div class="menu-item" data-content="evolucao">
+                    <i class="fas fa-fire"></i>
+                    <span>Evolução</span>
+                </div>
+                <div class="menu-item" data-content="pagamento">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Pagamento</span>
+                </div>
+                <div class="menu-item" data-content="planos">
+                    <i class="fas fa-list-alt"></i>
+                    <span>Planos</span>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="time">
+                    <i class="fas fa-clock"></i>
+                    <span id="current-time">14:30</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div class="main-content">
+            <div class="header">
+                <div class="toggle-menu" id="toggle-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <div class="user-info">
+                    <span>Olá, <span id="user-name-display">Visitante</span>!</span>
+                    <div class="notification-icon">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                    <!-- Adicionado botão de logout -->
+                    <a href="/logout" title="Sair" class="logout-btn"><i class="fas fa-sign-out-alt"></i></a>
+                </div>
+            </div>
+
+            <!-- Conteúdo Dinâmico -->
+            <div class="content-area">
+                <!-- Seção Usuário -->
+                <div class="content-section active" id="usuario-content">
+                    <h2>Meu Perfil</h2>
+                    <div class="profile-card">
+                        <div class="profile-header">
+                            <div class="profile-cover">
+                                <div class="profile-avatar">
+                                    <img id="img-perfil-visual" src="/alunos/images/pandao.png" alt="Foto do perfil">
+
+                                    <div class="edit-avatar" id="btn-camera" title="Alterar foto">
+                                        <i class="fas fa-camera"></i>
+                                    </div>
+                                </div>
+
+                                <input type="file" id="input-foto-perfil" accept="image/*" style="display: none;">
+                            </div>
+                            <div class="profile-info">
+                                <h3 id="profile-name">Carregando...</h3>
+                                <p id="profile-since">Aluno desde: ...</p>
+                                <p id="profile-plan">Plano: ...</p>
+                            </div>
+                        </div>
+                        <div class="profile-details">
+                            <div class="detail-item">
+                                <div class="section-header">
+                                    <h4>Informações Pessoais</h4>
+                                    <button id="btn-enable-edit" class="btn-icon-edit">
+                                        <i class="fas fa-pen"></i> Editar
+                                    </button>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Nome Completo</label>
+                                    <input type="text" id="input-nome" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label>E-mail</label>
+                                    <input type="email" id="input-email" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label>Telefone</label>
+                                    <input type="tel" id="input-telefone" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label>Endereço (Rua)</label>
+                                    <input type="text" id="input-rua" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label>Bairro</label>
+                                    <input type="text" id="input-bairro" disabled>
+                                </div>
+
+                                <button id="btn-save-info" class="primary-btn"
+                                    style="display: none; width: 100%; margin-top: 15px;">
+                                    <i class="fas fa-save"></i> Salvar Alterações
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <label>Data de Nascimento</label>
+                                <input type="text" id="input-nascimento" disabled>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <h4>Alterar Senha</h4>
+                            <div class="form-group">
+                                <label>Senha Atual</label>
+                                <input type="password" id="senha-atual" placeholder="Digite sua senha atual">
+                            </div>
+                            <div class="form-group">
+                                <label>Nova Senha</label>
+                                <input type="password" id="nova-senha" placeholder="Digite a nova senha">
+                            </div>
+                            <div class="form-group">
+                                <label>Confirmar Nova Senha</label>
+                                <input type="password" id="confirmar-senha" placeholder="Confirme a nova senha">
+                            </div>
+                            <button id="btn-change-password" class="primary-btn">Alterar Senha</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section" id="evolucao-content">
+                <h2>Minha Evolução</h2>
+
+                <div class="stats-overview"
+                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+                    <div class="stat-card"
+                        style="background: linear-gradient(135deg, #FF9800, #F44336); color: white; padding: 20px; border-radius: 15px; text-align: center;">
+                        <i class="fas fa-fire" style="font-size: 2.5rem; margin-bottom: 10px;"></i>
+                        <h3 id="evo-ofensiva" style="font-size: 3rem; margin: 0;">0</h3>
+                        <p>Dias Seguidos</p>
+                    </div>
+
+                    <div class="stat-card"
+                        style="background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                        <i class="fas fa-calendar-check"
+                            style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 10px;"></i>
+                        <h3 id="evo-mes" style="font-size: 3rem; margin: 0; color: var(--primary-color);">0</h3>
+                        <p style="color: #666;">Treinos este mês</p>
+                    </div>
+                </div>
+
+                <div class="ranking-container"
+                    style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                    <h3 style="margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                        <i class="fas fa-trophy" style="color: #FFD700;"></i> Ranking do Mês
+                    </h3>
+                    <ul id="ranking-list" style="list-style: none;">
+                        <li style="text-align: center; color: #888;">Carregando ranking...</li>
+                    </ul>
+
+                    <div id="minha-posicao-alert"
+                        style="margin-top: 20px; background: #f9f9f9; padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; color: var(--primary-color);">
+                        Você está em ...º lugar!
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- Seção Pagamento -->
+            <div class="content-section" id="pagamento-content">
+                <h2>Formas de Pagamento</h2>
+                <div class="payment-container">
+                    <div class="payment-methods">
+                        <h3>Métodos de Pagamento Cadastrados</h3>
+
+                        <div class="payment-card">
+                            <div class="payment-card-header">
+                                <div class="card-icon">
+                                    <i class="fab fa-cc-visa"></i>
+                                </div>
+                                <div class="card-info">
+                                    <h4>Cartão de Crédito</h4>
+                                    <p>VISA terminando em 4567</p>
+                                    <p>Validade: 12/2026</p>
+                                </div>
+                                <div class="card-default">
+                                    <span class="default-badge">Principal</span>
+                                </div>
+                            </div>
+                            <div class="payment-card-actions">
+                                <div class="auto-payment">
+                                    <label class="switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span>Pagamento Automático</span>
+                                </div>
+                                <div class="card-buttons">
+                                    <button class="edit-card-btn"><i class="fas fa-edit"></i> Editar</button>
+                                    <button class="remove-card-btn"><i class="fas fa-trash"></i> Remover</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="payment-card">
+                            <div class="payment-card-header">
+                                <div class="card-icon">
+                                    <i class="fab fa-cc-mastercard"></i>
+                                </div>
+                                <div class="card-info">
+                                    <h4>Cartão de Crédito</h4>
+                                    <p>MasterCard terminando em 8901</p>
+                                    <p>Validade: 09/2025</p>
+                                </div>
+                            </div>
+                            <div class="payment-card-actions">
+                                <div class="auto-payment">
+                                    <label class="switch">
+                                        <input type="checkbox">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span>Pagamento Automático</span>
+                                </div>
+                                <div class="card-buttons">
+                                    <button class="make-default-btn"><i class="fas fa-star"></i> Tornar
+                                        Principal</button>
+                                    <button class="remove-card-btn"><i class="fas fa-trash"></i> Remover</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="add-payment-method">
+                            <i class="fas fa-plus"></i>
+                            <span>Adicionar Forma de Pagamento</span>
+                        </button>
+                    </div>
+
+                    <div class="payment-history">
+                        <h3>Histórico de Pagamentos</h3>
+                        <div class="payment-history-list">
+                            <div class="payment-history-item">
+                                <div class="payment-date">
+                                    <span class="month">ABR</span>
+                                    <span class="day">15</span>
+                                </div>
+                                <div class="payment-details">
+                                    <h4>Mensalidade - Plano Premium</h4>
+                                    <p>Pagamento processado com sucesso</p>
+                                </div>
+                                <div class="payment-amount">
+                                    <span>R$ 199,90</span>
+                                    <span class="payment-status success">Pago</span>
+                                </div>
+                            </div>
+
+                            <div class="payment-history-item">
+                                <div class="payment-date">
+                                    <span class="month">MAR</span>
+                                    <span class="day">15</span>
+                                </div>
+                                <div class="payment-details">
+                                    <h4>Mensalidade - Plano Premium</h4>
+                                    <p>Pagamento processado com sucesso</p>
+                                </div>
+                                <div class="payment-amount">
+                                    <span>R$ 199,90</span>
+                                    <span class="payment-status success">Pago</span>
+                                </div>
+                            </div>
+
+                            <div class="payment-history-item">
+                                <div class="payment-date">
+                                    <span class="month">FEV</span>
+                                    <span class="day">15</span>
+                                </div>
+                                <div class="payment-details">
+                                    <h4>Mensalidade - Plano Premium</h4>
+                                    <p>Pagamento processado com sucesso</p>
+                                </div>
+                                <div class="payment-amount">
+                                    <span>R$ 199,90</span>
+                                    <span class="payment-status success">Pago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção Planos -->
+            <div class="content-section" id="planos-content">
+                <h2>Meu Plano e Opções</h2>
+                <div class="current-plan">
+                    <h3>Plano Atual</h3>
+                    <div class="plan-card current">
+                        <div class="plan-badge">Seu Plano</div>
+                        <div class="plan-header">
+                            <h3>Plano Premium</h3>
+                            <span class="plan-price">R$ 199,90<span class="period">/mês</span></span>
+                        </div>
+                        <div class="plan-features">
+                            <ul>
+                                <li><i class="fas fa-check"></i> Acesso ilimitado às turmas</li>
+                                <li><i class="fas fa-check"></i> Material didático físico e digital</li>
+                                <li><i class="fas fa-check"></i> Suporte prioritário 24/7</li>
+                                <li><i class="fas fa-check"></i> 4 aulas particulares por mês</li>
+                            </ul>
+                        </div>
+                        <div class="plan-info">
+                            <p>Próxima cobrança: <strong>15/05/2025</strong></p>
+                            <p>Status: <span class="status-active">Ativo</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="available-plans">
+                    <h3>Outros Planos Disponíveis</h3>
+                    <div class="plans-container">
+                        <div class="plan-card">
+                            <div class="plan-header">
+                                <h3>Plano Básico</h3>
+                                <span class="plan-price">R$ 99,90<span class="period">/mês</span></span>
+                            </div>
+                            <div class="plan-features">
+                                <ul>
+                                    <li><i class="fas fa-check"></i> Acesso a 5 turmas</li>
+                                    <li><i class="fas fa-check"></i> Material didático digital</li>
+                                    <li><i class="fas fa-check"></i> Suporte por e-mail</li>
+                                    <li><i class="fas fa-times"></i> Aulas particulares</li>
+                                </ul>
+                            </div>
+                            <button class="change-plan-btn">Mudar para este Plano</button>
+                        </div>
+
+                        <div class="plan-card">
+                            <div class="plan-badge">Mais Popular</div>
+                            <div class="plan-header">
+                                <h3>Plano Premium Plus</h3>
+                                <span class="plan-price">R$ 299,90<span class="period">/mês</span></span>
+                            </div>
+                            <div class="plan-features">
+                                <ul>
+                                    <li><i class="fas fa-check"></i> Acesso ilimitado às turmas</li>
+                                    <li><i class="fas fa-check"></i> Material didático físico e digital</li>
+                                    <li><i class="fas fa-check"></i> Suporte prioritário 24/7</li>
+                                    <li><i class="fas fa-check"></i> 8 aulas particulares por mês</li>
+                                    <li><i class="fas fa-check"></i> Acesso a eventos exclusivos</li>
+                                </ul>
+                            </div>
+                            <button class="change-plan-btn">Mudar para este Plano</button>
+                        </div>
+
+                        <div class="plan-card">
+                            <div class="plan-header">
+                                <h3>Plano Anual</h3>
+                                <span class="plan-price">R$ 1.799,00<span class="period">/ano</span></span>
+                                <span class="plan-discount">Economize R$ 599,80</span>
+                            </div>
+                            <div class="plan-features">
+                                <ul>
+                                    <li><i class="fas fa-check"></i> Todos os benefícios do Premium</li>
+                                    <li><i class="fas fa-check"></i> 2 meses grátis</li>
+                                    <li><i class="fas fa-check"></i> Acesso a conteúdo exclusivo</li>
+                                    <li><i class="fas fa-check"></i> Desconto em produtos parceiros</li>
+                                </ul>
+                            </div>
+                            <button class="change-plan-btn">Mudar para este Plano</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+</body>
+
+</html>

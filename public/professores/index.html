@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TeamPanda - Dashboard de Professores</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/professores/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="script.js" defer></script>
+    <script src="/professores/script.js" defer></script>
 </head>
+
 <body>
     <div class="container">
         <!-- Menu Lateral -->
         <div class="sidebar" id="sidebar">
             <div class="logo-container">
-                <img src="images/pandao.png" alt="TeamPanda Logo" class="logo">
+                <img src="/professores/images/pandao.png" alt="TeamPanda Logo" class="logo">
             </div>
-            
+
             <div class="menu-items">
                 <div class="menu-item active" data-content="usuario">
                     <i class="fas fa-user"></i>
@@ -34,12 +36,8 @@
                     <span>Relatórios</span>
                 </div>
             </div>
-            
+
             <div class="sidebar-footer">
-                <div class="weather">
-                    <i class="fas fa-temperature-high"></i>
-                    <span id="temperature"></span>
-                </div>
                 <div class="time">
                     <i class="fas fa-clock"></i>
                     <span id="current-time"></span>
@@ -53,7 +51,7 @@
                     <i class="fas fa-bars"></i>
                 </div>
                 <div class="user-info">
-                    <span>Olá, nome!</span>
+                    <span id="header-user-name">Carregando...</span>
                     <a href="/logout" title="Sair"><i class="fas fa-sign-out-alt"></i></a>
                 </div>
             </div>
@@ -68,8 +66,8 @@
                                 <i class="fas fa-user-circle"></i>
                             </div>
                             <div class="profile-info">
-                                <h3>nome</h3>
-                                <p>email</p>
+                                <h3 id="profile-name">Carregando...</h3>
+                                <p id="profile-email">...</p>
                             </div>
                         </div>
                         <div class="profile-details">
@@ -77,15 +75,15 @@
                                 <h4>Informações Pessoais</h4>
                                 <div class="form-group">
                                     <label>Nome Completo</label>
-                                    <input type="text" value="{{ nome }}" disabled>
+                                    <input type="text" id="view-nome" disabled>
                                 </div>
                                 <div class="form-group">
                                     <label>E-mail</label>
-                                    <input type="email" value="{{ email }}" disabled>
+                                    <input type="email" id="view-email" disabled>
                                 </div>
                                 <div class="form-group">
                                     <label>Telefone</label>
-                                    <input type="tel" value="{{ telefone }}" disabled>
+                                    <input type="tel" id="view-telefone" disabled>
                                 </div>
                                 <button class="edit-btn" id="edit-profile-btn">Editar Informações</button>
                             </div>
@@ -103,7 +101,7 @@
                         </div>
                         <button class="add-btn" id="add-aluno-btn"><i class="fas fa-plus"></i> Novo Aluno</button>
                     </div>
-                    
+
                     <div class="students-table">
                         <table>
                             <thead>
@@ -119,7 +117,8 @@
                             <tbody id="alunos-table-body">
                                 <!-- Os dados dos alunos serão carregados do banco de dados -->
                                 <tr class="empty-row">
-                                    <td colspan="6" class="empty-message">Nenhum aluno encontrado. Utilize o botão "Novo Aluno" para adicionar.</td>
+                                    <td colspan="6" class="empty-message">Nenhum aluno encontrado. Utilize o botão "Novo
+                                        Aluno" para adicionar.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -139,7 +138,56 @@
 
                 <!-- Seção Relatórios -->
                 <div class="content-section" id="relatorios-content">
-                    <h2>Geração de Relatórios</h2>
+                    <h2>Painel Geral e Financeiro</h2>
+
+                    <div class="stats-overview"
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+
+                        <div class="stat-card"
+                            style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-left: 5px solid #4CAF50;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <h3 style="font-size: 1rem; color: #666;">Faturamento Mensal</h3>
+                                <i class="fas fa-dollar-sign"
+                                    style="font-size: 1.5rem; color: #4CAF50; opacity: 0.5;"></i>
+                            </div>
+                            <p id="dash-faturamento" style="font-size: 1.8rem; font-weight: bold; color: #333;">R$ 0,00
+                            </p>
+                            <span style="font-size: 0.8rem; color: #888;">Estimado com base nos ativos</span>
+                        </div>
+
+                        <div class="stat-card"
+                            style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-left: 5px solid #2196F3;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <h3 style="font-size: 1rem; color: #666;">Alunos Ativos</h3>
+                                <i class="fas fa-users" style="font-size: 1.5rem; color: #2196F3; opacity: 0.5;"></i>
+                            </div>
+                            <p id="dash-ativos" style="font-size: 1.8rem; font-weight: bold; color: #333;">0</p>
+                            <span style="font-size: 0.8rem; color: #888;">Total matriculado</span>
+                        </div>
+
+                        <div class="stat-card"
+                            style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-left: 5px solid #F44336;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <h3 style="font-size: 1rem; color: #666;">Inativos / Cancelados</h3>
+                                <i class="fas fa-user-times"
+                                    style="font-size: 1.5rem; color: #F44336; opacity: 0.5;"></i>
+                            </div>
+                            <p id="dash-inativos" style="font-size: 1.8rem; font-weight: bold; color: #333;">0</p>
+                        </div>
+                    </div>
+
+                    <div class="reports-container">
+                        <div class="reports-list">
+                            <h3>Distribuição por Planos</h3>
+                            <div id="plan-distribution-list"
+                                style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                <p>Carregando...</p>
+                            </div>
+                        </div>
+                    </div>
                     <div class="reports-container">
                         <div class="reports-filters">
                             <h3>Filtros</h3>
@@ -181,7 +229,7 @@
                                     <p>Use os filtros ao lado para gerar um novo relatório</p>
                                 </div>
                             </div>
-                            
+
                             <div class="report-card new-report" id="new-custom-report">
                                 <div class="new-report-content">
                                     <i class="fas fa-plus-circle"></i>
@@ -303,8 +351,8 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group checkbox-group">
-                            <input type="checkbox" id="aluno-status" name="status" checked>
-                            <label for="aluno-status">Aluno Ativo</label>
+                            <input type="checkbox" id="aluno-status" name="status">
+                            <label for="aluno-status">Aluno Ativo (Liberar acesso)</label>
                         </div>
                     </div>
                     <div class="form-actions">
@@ -408,7 +456,8 @@
                                     <input type="checkbox" name="add_feature_included[]" checked>
                                     <label>Incluído</label>
                                 </div>
-                                <button type="button" class="remove-add-feature-btn"><i class="fas fa-times"></i></button>
+                                <button type="button" class="remove-add-feature-btn"><i
+                                        class="fas fa-times"></i></button>
                             </div>
                         </div>
                         <button type="button" class="add-feature-btn" id="add-add-feature-btn">
@@ -437,9 +486,63 @@
         </div>
     </div>
 
+    <div class="modal" id="pagamento-modal">
+    <div class="modal-content confirm-modal-content">
+        <div class="modal-header">
+            <h3>Registrar Pagamento</h3>
+            <button class="close-modal" id="close-pagamento-modal"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <form id="pagamento-form">
+                <input type="hidden" id="pagamento-aluno-id">
+                
+                <div class="form-group">
+                    <label>Aluno</label>
+                    <input type="text" id="pagamento-aluno-nome" disabled style="background: #f0f0f0; font-weight: bold;">
+                </div>
+
+                <div class="form-group">
+                    <label>Plano de Referência</label>
+                    <select id="pagamento-plano-select" required style="font-weight: bold; color: var(--primary-color); border: 2px solid var(--primary-color);">
+                        <option value="">Carregando...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Data de Vencimento</label>
+                    <input type="date" id="pagamento-data" required style="font-size: 1.1rem;">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Valor (R$)</label>
+                        <input type="number" name="valor" id="pagamento-valor" step="0.01" required readonly style="background-color: #e9ecef;">
+                    </div>
+                    <div class="form-group">
+                        <label>Forma</label>
+                        <select name="forma_pagamento" required>
+                            <option value="Dinheiro">Dinheiro</option>
+                            <option value="Cartão (Maquininha)">Cartão (Maquininha)</option>
+                            <option value="Pix (Manual)">Pix (Manual)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn" id="cancel-pagamento">Cancelar</button>
+                    <button type="submit" class="submit-btn" style="background-color: var(--success-color);">
+                        <i class="fas fa-check"></i> Confirmar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
     <div class="toast-container" id="toast-container">
     </div>
 
 
 </body>
+
 </html>

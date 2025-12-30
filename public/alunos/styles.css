@@ -43,105 +43,86 @@ body {
     color: var(--secondary-color);
     display: flex;
     flex-direction: column;
-    transition: var(--transition);
+    transition: all 0.3s ease;
     position: fixed;
     height: 100vh;
-    z-index: 100;
+    z-index: 1000;
+    overflow: hidden;
 }
 
 .sidebar.collapsed {
-    width: 70px;
+    width: 80px;
 }
 
+/* Logo */
 .logo-container {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
-.logo {
-    width: 120px;
-    height: 120px;
-    margin-bottom: 10px;
-}
-
-.logo-text {
-    font-size: 1.5rem;
+    padding: 20px 0;
     text-align: center;
-    line-height: 1.2;
 }
 
-.sidebar.collapsed .logo-text {
-    display: none;
+.logo-container img {
+    width: 110px;
+    transition: all 0.3s ease;
 }
 
+.sidebar.collapsed .logo-container img {
+    width: 45px;
+}
+
+/* Menu */
 .menu-items {
-    flex: 1;
+    margin-top: 20px;
 }
 
 .menu-item {
     display: flex;
     align-items: center;
     padding: 15px 20px;
+    gap: 15px;
     cursor: pointer;
-    transition: var(--transition);
+    transition: background 0.3s ease;
 }
 
 .menu-item:hover {
     background-color: var(--accent-color);
 }
 
-.menu-item.active {
-    background-color: var(--accent-color);
-    border-left: 4px solid var(--secondary-color);
-}
-
 .menu-item i {
-    font-size: 1.2rem;
-    margin-right: 15px;
-    min-width: 20px;
+    font-size: 1.3rem;
+    width: 30px;
     text-align: center;
 }
 
+.menu-item span {
+    font-size: 1rem;
+    white-space: nowrap;
+}
+
+/* Ocultar textos ao colapsar */
 .sidebar.collapsed .menu-item span {
     display: none;
 }
 
+.sidebar.collapsed .menu-item {
+    justify-content: center;
+}
+
+/* Footer */
 .sidebar-footer {
-    padding: 15px 20px;
-    border-top: 1px solid var(--accent-color);
+    margin-top: auto;
+    padding: 20px;
 }
 
-.weather, .time {
-    display: flex;
-    align-items: center;
-    margin: 10px 0;
-}
-
-.weather i, .time i {
-    margin-right: 10px;
-    font-size: 1.1rem;
-}
-
-.sidebar.collapsed .weather span, 
-.sidebar.collapsed .time span {
-    display: none;
-}
-
-/* Estilos do Conteúdo Principal */
+/* Conteúdo principal respeita sidebar */
 .main-content {
-    flex: 1;
     margin-left: 250px;
-    transition: var(--transition);
     width: calc(100% - 250px);
+    transition: all 0.3s ease;
 }
 
 .main-content.expanded {
-    margin-left: 70px;
-    width: calc(100% - 70px);
+    margin-left: 80px;
+    width: calc(100% - 80px);
 }
 
 .header {
@@ -957,91 +938,182 @@ input:checked + .slider:before {
     }
 }
 
+
+/* Tablets e celulares */
 @media (max-width: 768px) {
+
     .sidebar {
-        width: 70px;
+        width: 80px !important;
     }
-    
-    .sidebar .logo-text,
+
+    .sidebar.collapsed {
+        width: 80px;
+        box-shadow: 5px 0 10px rgba(0,0,0,0.15); /* cria o destaque lateral */
+    }
+
+
     .sidebar .menu-item span,
-    .sidebar .weather span,
-    .sidebar .time span {
+    .sidebar .logo-container img {
         display: none;
     }
-    
+
+    /* Conteúdo empurrado */
     .main-content {
-        margin-left: 70px;
-        width: calc(100% - 70px);
+        margin-left: 80px !important;
+        width: calc(100% - 80px) !important;
     }
-    
+
+    /* Sidebar expandida ao clicar */
     .sidebar.expanded {
-        width: 250px;
-        z-index: 1000;
+        width: 250px !important;
     }
-    
-    .sidebar.expanded .logo-text,
-    .sidebar.expanded .menu-item span,
-    .sidebar.expanded .weather span,
-    .sidebar.expanded .time span {
+
+    .sidebar.expanded .menu-item span {
+        display: inline;
+    }
+
+    .sidebar.expanded .logo-container img {
         display: block;
+        width: 110px;
     }
-    
-    .plans-container {
-        grid-template-columns: 1fr;
+
+    .sidebar.expanded .menu-item {
+        justify-content: flex-start;
+    }
+
+    /* Overlay */
+    .sidebar.expanded::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 250px;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0,0,0,0.5);
+        z-index: -1;
     }
 }
 
+/* Celulares pequenos */
 @media (max-width: 576px) {
-    .main-content {
-        margin-left: 0;
-        width: 100%;
-    }
-    
+
     .sidebar {
         transform: translateX(-100%);
-        width: 250px;
+        width: 250px !important;
     }
-    
+
     .sidebar.expanded {
         transform: translateX(0);
     }
-    
-    .sidebar .logo-text,
-    .sidebar .menu-item span,
-    .sidebar .weather span,
-    .sidebar .time span {
-        display: block;
+
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
     }
-    
-    .header {
-        padding: 10px 15px;
+}
+
+
+/* Celulares pequenos */
+@media (max-width: 576px) {
+
+    .sidebar {
+        transform: translateX(-100%);
+        width: 250px !important;
     }
-    
-    .content-area {
-        padding: 15px;
+
+    .sidebar.expanded {
+        transform: translateX(0);
     }
-    
-    .post-form-actions {
-        flex-wrap: wrap;
-        gap: 10px;
+
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
     }
-    
-    .post-action-btn span {
-        display: none;
-    }
-    
-    .post-actions {
-        flex-wrap: wrap;
-    }
-    
-    .payment-card-actions {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-    }
-    
-    .card-buttons {
-        width: 100%;
-        justify-content: space-between;
-    }
+}
+/* =========================================
+   MELHORIAS NO PERFIL DO ALUNO
+   ========================================= */
+
+/* 1. Cabeçalho da Seção (Onde fica o Título e o Botão) */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--light-gray);
+}
+
+.section-header h4 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    border: none; /* Remove borda antiga se houver */
+    padding: 0;
+}
+
+/* 2. Botão Editar "Premium" */
+.btn-icon-edit {
+    background: transparent;
+    border: 1px solid var(--medium-gray);
+    color: var(--dark-gray);
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-icon-edit:hover {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.btn-icon-edit i {
+    font-size: 0.8rem;
+}
+
+/* 3. Estilo dos Inputs (Visualização vs Edição) */
+/* Quando estiver travado (Modo Leitura) */
+.profile-details input:disabled {
+    background-color: #fafafa; /* Quase branco */
+    border: 1px solid transparent; /* Sem borda visível */
+    border-bottom: 1px solid var(--medium-gray); /* Só uma linha embaixo */
+    border-radius: 0;
+    color: var(--text-color);
+    font-weight: 500;
+    padding-left: 0; /* Alinha com o label */
+    cursor: default;
+}
+
+/* Quando clicar em Editar (Modo Edição) */
+.profile-details input:not(:disabled) {
+    background-color: white;
+    border: 1px solid var(--info-color);
+    border-radius: var(--border-radius);
+    padding: 10px;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1); /* Brilho azul suave */
+    transition: all 0.3s ease;
+}
+
+/* Ajuste nos Labels */
+.form-group label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--dark-gray);
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+/* Espaçamento entre campos */
+.form-group {
+    margin-bottom: 20px;
 }

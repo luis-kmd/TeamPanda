@@ -378,16 +378,22 @@ form.sign-in-form {
 }
 
 @media (max-width: 570px) {
+  
   form {
     padding: 0 1.5rem;
   }
 
   .image {
-    display: none;
+    display: block;      
+    width: 100px;         
+    margin-right: 10px;
   }
+
   .panel .content {
     padding: 0.5rem 1rem;
+    flex: 1;
   }
+  
   .container {
     padding: 1.5rem;
   }
@@ -401,4 +407,5 @@ form.sign-in-form {
     bottom: 28%;
     left: 50%;
   }
+  
 }
